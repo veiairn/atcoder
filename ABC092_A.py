@@ -1,0 +1,5 @@
+n=int(input())
+m=int(input())
+o=int(input())
+p=int(input())
+print(min(n,m)+min(p,o),end='\n')
