@@ -1,0 +1,232 @@
+{
+    "heapq_max": {
+    "prefix": "heapq_max",
+    "body": [
+        "import heapq",
+        "",
+        "nums = [5, 1, 8, 3]",
+        "# マイナスにして heapify",
+        "nums = [-n for n in nums]",
+        "heapq.heapify(nums)",
+        "",
+        "# 最大値を取り出す",
+        "max_value = -heapq.heappop(nums)",
+        "print(max_value)  # 出力: 8"
+    ],
+    "description": "heapq を使って最大値を取り出す"
+    },
+
+    "heapq_min": {
+    "prefix": "heapq_min",
+    "body": [
+        "import heapq",
+        "",
+        "nums = [5, 1, 8, 3]",
+        "heapq.heapify(nums)",
+        "",
+        "# 最小値を取り出す",
+        "first_min = heapq.heappop(nums)  # 1 (最小値)",
+        "# 2番目の最小値を取り出す",
+        "second_min = heapq.heappop(nums) # 3 (2番目の最小値)",
+        "",
+        "print(first_min, second_min)  # 出力: 1 3"
+    ],
+    "description": "heapq を使って最小値・2番目の最小値を取り出す"
+    },
+    "For Loop i": {
+        "prefix": "fori",
+        "body": [
+        "for i in range(${1:10}):",
+        "    $0"
+        ],
+        "description": "For loop from 0 to specified number"
+    },
+    "For Loop j": {
+        "prefix": "forj",
+        "body": [
+        "for j in range(${1:10}):",
+        "    $0"
+        ],
+        "description": "For loop from 0 to specified number"
+    },
+    "For Loop k": {
+        "prefix": "fork",
+        "body": [
+        "for k in range(${1:10}):",
+        "    $0"
+        ],
+        "description": "For loop from 0 to specified number"
+    },
+    "BFS (Graph)": {
+        "prefix": "bfs",
+        "body": [
+        "from collections import deque",
+        "",
+        "def bfs(graph, start):",
+        "    n = len(graph)",
+        "    dist = [-1] * n",
+        "    prev = [-1] * n",
+        "    q = deque([start])",
+        "    dist[start] = 0",
+        "    while q:",
+        "        v = q.popleft()",
+        "        for to in graph[v]:",
+        "            if dist[to] == -1:",
+        "                dist[to] = dist[v] + 1",
+        "                prev[to] = v",
+        "                q.append(to)",
+        "    return dist, prev",
+        "",
+        "def reconstruct_path(prev, start, goal):",
+        "    if prev[goal] == -1 and start != goal:",
+        "        return []",
+        "    path = []",
+        "    v = goal",
+        "    while v != -1:",
+        "        path.append(v)",
+        "        if v == start: break",
+        "        v = prev[v]",
+        "    return path[::-1]",
+        "",
+        "# Example usage",
+        "G = ${1:[[1,2],[0,3],[0,3],[1,2]]}",
+        "s = ${2:0}",
+        "t = ${3:3}",
+        "dist, prev = bfs(G, s)",
+        "print('dist:', dist)",
+        "print('path:', reconstruct_path(prev, s, t))"
+        ],
+        "description": "Breadth-First Search on adjacency list (returns distance and predecessor; includes path reconstruction)"
+    },
+    "BFS (Grid 4-dir)": {
+        "prefix": "bfsgrid",
+        "body": [
+        "from collections import deque",
+        "",
+        "def bfs_grid(grid, sy, sx):",
+        "    H, W = len(grid), len(grid[0])",
+        "    dist = [[-1]*W for _ in range(H)]",
+        "    q = deque()",
+        "    q.append((sy, sx))",
+        "    dist[sy][sx] = 0",
+        "    for_yx = [(1,0),(-1,0),(0,1),(0,-1)]",
+        "    while q:",
+        "        y, x = q.popleft()",
+        "        for dy, dx in for_yx:",
+        "            ny, nx = y + dy, x + dx",
+        "            if 0 <= ny < H and 0 <= nx < W and grid[ny][nx] != '#' and dist[ny][nx] == -1:",
+        "                dist[ny][nx] = dist[y][x] + 1",
+        "                q.append((ny, nx))",
+        "    return dist",
+        "",
+        "# Example usage",
+        "grid = ${1:[list('...'), list('.#.'), list('...')]}",
+        "sy, sx = ${2:0}, ${3:0}",
+        "dist = bfs_grid(grid, sy, sx)",
+        "for row in dist:",
+        "    print(row)"
+        ],
+        "description": "BFS on a 2D grid (walls marked with '#'); returns distance matrix"
+    },
+    "Binary Enumeration (bit全探索)": {
+    "prefix": "bitsearch",
+    "body": [
+    "N = ${1:4}  # 要素数",
+    "arr = list(range(1, N+1))  # [1,2,3,4]",
+    "",
+    "for bit in range(1 << N):",
+    "    subset = []",
+    "    for i in range(N):",
+    "        if bit & (1 << i):",
+    "            subset.append(arr[i])",
+    "    print(f\"bit={bit:0{N}b} subset={subset}\")"
+    ],
+    "description": "bit 全探索で部分集合を列挙する Python スニペット"
+    },
+    "Bit Full Search (Max)": {
+        "prefix": "bitmax",
+        "body": [
+            "arr = [1, 2, 3, 4]",
+            "N = len(arr)",
+            "max_value = float('-inf')",
+            "best_subset = []",
+            "",
+            "for bit in range(1 << N):",
+            "    subset = []",
+            "    value = 0",
+            "    for i in range(N):",
+            "        if (bit >> i) & 1:",
+            "            subset.append(arr[i])",
+            "            value += arr[i]  # ← 評価関数を変更して自由に使う",
+            "    if value > max_value:",
+            "        max_value = value",
+            "        best_subset = subset",
+            "",
+            "print('Max value:', max_value)",
+            "print('Best subset:', best_subset)"
+        ],
+        "description": "bit全探索で最大値を探索するスニペット"
+    },
+    "Bit Full Search (Min)": {
+        "prefix": "bitmin",
+        "body": [
+            "arr = [1, 2, 3, 4]",
+            "N = len(arr)",
+            "min_value = float('inf')",
+            "best_subset = []",
+            "",
+            "for bit in range(1 << N):",
+            "    subset = []",
+            "    value = 0",
+            "    for i in range(N):",
+            "        if (bit >> i) & 1:",
+            "            subset.append(arr[i])",
+            "            value += arr[i]  # ← 評価関数を変更して自由に使う",
+            "    if value < min_value:",
+            "        min_value = value",
+            "        best_subset = subset",
+            "",
+            "print('Min value:', min_value)",
+            "print('Best subset:', best_subset)"
+        ],
+        "description": "bit全探索で最小値を探索するスニペット"
+    },
+    "Bit Full Search (Knapsack)": {
+        "prefix": "bitknap",
+        "body": [
+            "# 品物: (名前, 重さ, 価値)",
+            "items = [",
+            "    (\"A\", 2, 3),",
+            "    (\"B\", 1, 2),",
+            "    (\"C\", 3, 6),",
+            "    (\"D\", 2, 4),",
+            "    (\"E\", 1, 1)",
+            "]",
+            "",
+            "N = len(items)",
+            "max_weight = 5  # ← 制約条件",
+            "max_value = 0",
+            "best_subset = []",
+            "best_weight = 0",
+            "",
+            "for bit in range(1 << N):",
+            "    subset = []",
+            "    weight = 0",
+            "    value = 0",
+            "    for i in range(N):",
+            "        if (bit >> i) & 1:",
+            "            subset.append(items[i][0])",
+            "            weight += items[i][1]",
+            "            value += items[i][2]",
+            "    if weight <= max_weight and value > max_value:",
+            "        max_value = value",
+            "        best_weight = weight",
+            "        best_subset = subset",
+            "",
+            "print(\"Best subset:\", best_subset)",
+            "print(\"Total value:\", max_value)",
+            "print(\"Total weight:\", best_weight)"
+        ],
+        "description": "bit全探索でナップサック問題を解くスニペット"
+    }
+}
